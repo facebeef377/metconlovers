@@ -1,0 +1,45 @@
+<h2 style="font-weight: 100;">Dodawanie kategorii</h2>
+<h4 style="font-weight: 100;">Zawody: {{model.name}}</h4>
+<div class="row">
+  <div class="col-12">
+    <form class="shadow-sm">
+      <div class="form-group">
+        <h5>Nazwa kategorii</h5>
+        <input class="form-control" type="text" ng-model="category.name">
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h5>&nbsp;</h5>
+          <input type="checkbox" ng-model="category.qual">
+          <span>Wymagane kwalifikacje</span>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <h5>Maksymalna ilość zaowdników</h5>
+            <input class="form-control" type="number" ng-model="category.quantity">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h5>&nbsp;</h5>
+          <input type="checkbox" ng-model="category.paid">
+          <span>Kategoria płatna</span>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group" ng-if="category.paid">
+            <h5>Kwota wpisowa</h5>
+            <input class="form-control" type="number" ng-model="category.price">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <h5>Opis kategorii</h5>
+        <textarea ng-model="category.description" class="form-control" type="text" rows="5"></textarea>
+      </div>
+    </form>
+    <button class="btn btn-primary" ng-click="addCategory()">Dodaj</button>
+  </div>
+</div>
+      
+                

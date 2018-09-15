@@ -1,0 +1,39 @@
+<h2 style="font-weight: 100;">Lista kategorii</h2>
+<br />
+<a href="#/add_category"><button class="btn btn-primary">Dodaj kategorię</button></a>
+<br /><br />
+
+<form class="shadow-sm">
+  <center><h1 style="font-weight: 100;" ng-if="categories.length == 0">Brak kategorii!</h1></center>
+
+  <table class="table" ng-if="categories.length">
+    <thead>
+      <th>Lp.</th>
+      <th>Nazwa</th>
+      <th>Opis</th>
+      <th>Płatna</th>
+      <th>Wymaga kwalifikacji</th>
+      <th>Ilość zawodników</th>
+      <th>Edytuj</th>
+      <th>Usuń</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in categories">
+        <td>{{$index + 1}}</td>
+        <td>{{x.name}}</td>
+        <td>{{x.description}}</td>
+        <td>
+          <span ng-if="x.paid">Tak ({{x.price}})</span>
+          <span ng-if="!x.paid">Nie</span>
+        </td>
+        <td>
+          <span ng-if="x.qual">Tak</span>
+          <span ng-if="!x.qual">Nie</span>
+        </td>
+        <td>{{x.quantity}}</td>
+        <td><button class="btn" ng-click="gotoEdit_cat(x)">GO</button></td>
+        <td><button class="btn btn-danger" ng-click="removeCategory(x)">X</button></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
