@@ -1,1 +1,14 @@
 <h2 style="font-weight: 100;">Panel organizatora</h2>
+<div class="row" ng-repeat="x in events">
+  <div class="col-8">
+    <form class="shadow-sm">
+      <h4>{{x.name}}</h4>
+    </form>
+  </div>
+  <div class="col-4">
+    <form class="shadow-sm">
+      <h5>Informacje o kategoriach</h5>
+      <img class="img-fluid" src="https://www.phpflow.com/wp-content/uploads/2015/11/pie-charts-angularjs-demo.png">
+    </form>
+  </div>
+</div>

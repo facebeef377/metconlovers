@@ -15,7 +15,7 @@ public class Event {
     private Integer id;
 	private String name;
 	private String description;
-	private String type;
+	private boolean type;
 	private String date_start;
 	private String date_end;
 	private String country;
@@ -51,10 +51,10 @@ public class Event {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getType() {
+	public boolean getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(boolean type) {
 		this.type = type;
 	}
 	public String getDate_start() {

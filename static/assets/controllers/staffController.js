@@ -6,6 +6,8 @@ app.controller(
   {
     
     $scope.baseUrl = "http://localhost:8080/staff";
+    $scope.baseApi = "http://localhost:8080"
+    
     $scope.model = {};
     $scope.events = [];
     $scope.category = {};
@@ -185,6 +187,31 @@ app.controller(
         });
     }
     
+    $scope.imagedata = {};
+    $scope.UploadLogo = function(file) {       
+      var data = file.files[0];
+      var fd = new FormData();
+      fd.append("file", data);
+      fd.append("token", $rootScope.token);
+      fd.append("document", "document");
+      fd.append("multimedia", "multimedia");
+
+      $http.post($scope.baseApi + '/uploadFile', fd, {
+        withCredentials: false,
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+      })
+      .then(function(result) {
+        $scope.model.url_logo = result.data.fileName;
+      });
+    }
+    
+    $scope.deleteLogo = function(){
+      delete $scope.model.url_logo;
+    }
+    
     
     
   });
@@ -212,7 +239,7 @@ app.config(function($routeProvider,$locationProvider) {
 		templateUrl : 'pages/workouts.html',
 	})
     .when('/edit_event', {
-		templateUrl : 'pages/edit_event.html',
+		templateUrl : 'pages/add.html',
 	})
     .when('/edit_profile', {
 		templateUrl : 'pages/edit_profile.html',

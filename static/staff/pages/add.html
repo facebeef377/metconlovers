@@ -1,4 +1,5 @@
-          <h2 style="font-weight: 100;">Dodawanie zawodów</h2>
+          <h2 ng-if="model.id" style="font-weight: 100;">Edycja zawodów</h2>
+<h2 ng-if="!model.id" style="font-weight: 100;">Dodawanie zawodów</h2>
           <div class="row">
             <div class="col-lg-8">
               <form class="shadow-sm">
@@ -9,16 +10,18 @@
                 <h5>Typ zawodów</h5>
                 <div class="row">
                   <div class="col-md-6">
-                    <label class="custom-control custom-radio">
-                      <input id="radio1" name="radio" ng-model="model.type" type="radio" class="custom-control-input">
-                      <span class="custom-control-indicator"></span>
+                    <label class="custom-control">
+                      <input style="display: none;" ng-model="model.type" type="checkbox">
+                      <img ng-if="!model.type" src="../../assets/img/chk.png">
+                      <img ng-if="model.type" src="../../assets/img/un.png">
                       <span class="custom-control-description">Jednodniowe</span>
                     </label>
                   </div>
                   <div class="col-md-6">
-                    <label class="custom-control custom-radio">
-                      <input id="radio2" name="radio" ng-model="model.type" type="radio" class="custom-control-input">
-                      <span class="custom-control-indicator"></span>
+                    <label class="custom-control">
+                      <input style="display: none;" ng-model="model.type" type="checkbox">
+                      <img ng-if="model.type" src="../../assets/img/chk.png">
+                      <img ng-if="!model.type" src="../../assets/img/un.png">
                       <span class="custom-control-description">Kilka dni</span>
                     </label>
                   </div>
@@ -30,7 +33,7 @@
                       <input ng-model="model.date_start" class="form-control" type="text" placeholder="YYYY-MM-DD HH:mm">
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6" ng-if="model.type">
                     <div class="form-group">
                       <label>Data zakończenia zawodów</label>
                       <input ng-model="model.date_end" class="form-control" type="text" placeholder="YYYY-MM-DD HH:mm">
@@ -91,7 +94,7 @@
                     </div>
                   </div>
                 </div>
-                <h5>Opcje dodatkowe</h5>
+                <!--<h5>Opcje dodatkowe</h5>
                 <div class="row">
                   <div class="col-md-4">
                     <div class="custom-control custom-checkbox my-1 mr-sm-2">
@@ -111,7 +114,7 @@
                       <label class="custom-control-label" for="customControlInlineq">Zawody płatne</label>
                     </div>
                   </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                   <h5>Opis zawodów</h5>
                   <textarea ng-model="model.description" class="form-control" type="text" rows="5"></textarea>
@@ -121,8 +124,13 @@
             <div class="col-lg-4">
               <form class="shadow-sm">
                 <center>
-                  <h3>Dodaj logo</h3>
-                  <button class="btn-plus">
+                  <h3 ng-if="model.url_logo">Logotyp</h3>
+                  <img ng-if="model.url_logo" class="img-fluid" ng-src="{{baseApi}}/downloadFile/{{model.url_logo}}">
+                  <br /><br />
+                  <button ng-if="model.url_logo" class="btn btn-danger" ng-click="deleteLogo()">Usuń logo</button>
+                  <h3 ng-if="!model.url_logo">Dodaj logo</h3>
+                  <input style="display: none;" type="file" onchange="angular.element(this).scope().UploadLogo({files : this.files});" id="fileinput">
+                  <button ng-if="!model.url_logo" class="btn-plus" onclick="logobutton()">
                     <i class="fas fa-plus"></i>
                   </button>
                 </center>
@@ -133,7 +141,7 @@
                 </center>
                 <div class="form-group">
                   <label>Facebook</label>
-                  <input ng-model="model.url_logo" class="form-control" type="text" placeholder="">
+                  <input ng-model="model.url_fb" class="form-control" type="text" placeholder="">
                 </div>
                 <div class="form-group">
                   <label>Instagram</label>
@@ -146,4 +154,6 @@
               </form>
             </div>
           </div>
-          <button class="btn btn-primary" ng-click="addEvent()">Dodaj zawody</button>
+          <button class="btn btn-primary" ng-click="addEvent()">Zapisz zawody</button>
+&nbsp;
+<button ng-if="model.id" class="btn btn-danger" ng-click="removeEvent()">Usuń zawody</button>
