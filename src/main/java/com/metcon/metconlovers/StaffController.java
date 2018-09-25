@@ -15,6 +15,10 @@ import com.metcon.metconlovers.Event;
 import com.metcon.metconlovers.EventRepository;
 import com.metcon.metconlovers.Category;
 import com.metcon.metconlovers.CategoryRepository;
+import com.metcon.metconlovers.Score;
+import com.metcon.metconlovers.ScoreRepository;
+import com.metcon.metconlovers.User_category;
+import com.metcon.metconlovers.User_categoryRepository;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/staff") // This means URL's start with /demo (after Application path)
@@ -26,6 +30,10 @@ public class StaffController {
 	private CategoryRepository categories;
 	@Autowired
 	private WorkoutRepository workouts;
+	@Autowired
+	private ScoreRepository scores;
+	@Autowired
+	private User_categoryRepository players;
 	
 	/////////////////////////////////////////////////////
 	//		LISTOWANIE
@@ -47,6 +55,18 @@ public class StaffController {
 	@PostMapping(path="/getAllWorkouts")
 	public @ResponseBody Iterable<Workout> getAllWorkouts() {
 		return workouts.findAll();
+	}
+	
+	//Zwraca liste wszystkich wyników w serwisie
+	@PostMapping(path="/getAllScores")
+	public @ResponseBody Iterable<Score> getAllScores() {
+		return scores.findAll();
+	}
+	
+	//Zwraca liste wszystkich przypisań zawodników w serwisie
+	@PostMapping(path="/getAllPlayers")
+	public @ResponseBody Iterable<User_category> getAllPlayers() {
+		return players.findAll();
 	}
 	
 	//Zwraca liste eventow przypisanych do organizatora
