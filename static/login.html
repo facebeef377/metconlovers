@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Logowanie</title>
+    
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="assets/css/login.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    
+    <script src="assets/js/angular.min.js" type="text/javascript"></script>
+    <script src="assets/js/ngStorage.min.js" type="text/javascript"></script>
+    
+    <script src="assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/js/sweetalert2.js" type="text/javascript"></script>
+    
+    <script src="assets/controllers/loginController.js" type="text/javascript"></script>
+    <script src="assets/controllers/header.js" type="text/javascript"></script>
+    
+  </head>
+    <body ng-app="app" ng-controller="loginController" ng-init="initVars()" id="login">
+        
+        <div class="container" ng-if="settings_loginpage.login">
+            <div class="row">
+                <div class="col-6 image"></div>
+                <div class="col-6 logindata">
+                    <h2>Logowanie</h2>
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="Login" ng-model="model.login">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="password" class="form-control" placeholder="Hasło" ng-model="model.password">
+                            </div>
+                            <div class="col-12">
+                                <button ng-click="login()">Logowanie</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p>Zapomniałeś hasła? <span class="click">Kliknij tutaj</span></p>
+                    <button class="reg" ng-click="gotoRegistration()">Rejestracja</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" ng-if="!settings_loginpage.login">
+            <div class="row">
+                <div class="col-6 image"></div>
+                <div class="col-6 logindata">
+                    <h2>Rejestracja</h2>
+                    <form>
+                        <div class="row elements">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" placeholder="Login" ng-model="model.login">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="password" class="form-control" placeholder="Hasło" ng-model="model.password">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="password" class="form-control" placeholder="Powtórz hasło" ng-model="settings_loginpage.password">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="Mail" ng-model="model.email">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="Powtórz mail" ng-model="settings_loginpage.email">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="Imię" ng-model="model.name">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" placeholder="Nazwisko" ng-model="model.surname">
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check" style="text-align: left;">
+                                    <label class="form-check-label label-black">
+                                        <img ng-if="!settings_loginpage.accept" class="un pitok" src="assets/img/un.png">
+                                        <img ng-if="settings_loginpage.accept" class="chk pitok" src="assets/img/chk.png">
+                                        <input style="display: none;" type="checkbox" ng-model="settings_loginpage.accept">
+                                        Akceptuję <span class="click">Regulamin</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button ng-click="register()">Rejestracja</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

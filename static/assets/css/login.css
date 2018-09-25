@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600&subset=latin-ext');
+
+body {
+    background: #f2f2f2;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: gray; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+
+#login .container {
+    background: white;
+    height: 80vh;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+#login .image {
+    background-image: url(../img/5.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: center;
+    height: 100%;
+    
+}
+
+#login .logindata {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+#login .elements > div {
+    margin-bottom: 10px;
+}
+
+#login h2 {
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+#login .click {
+    color: orange;
+}
+
+#login input {
+    border-radius: 0px;
+    padding: 10px;
+}
+
+#login button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: rgb(255, 165, 0);
+    border: none;
+    color: white;
+    text-shadow: 0px 2px 5.4px rgba(18, 23, 26, 0.3);
+    font-weight: 600;
+}

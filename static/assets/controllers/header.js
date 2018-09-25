@@ -88,4 +88,8 @@ app.run(function($rootScope) {
         }
     }
   
+  $rootScope.gotoLogin = function() {
+    document.location = $rootScope.baseUrl + "/login.html";
+  }
+  
 });
