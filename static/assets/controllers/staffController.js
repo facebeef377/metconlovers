@@ -5,8 +5,8 @@ app.controller(
   function($scope, $rootScope, $http, $localStorage, $sessionStorage, $location)
   {
     
-    $scope.baseUrl = "https://metconlovers.herokuapp.com/staff";
-    $scope.baseApi = "https://metconlovers.herokuapp.com"
+    $scope.baseUrl = "http://localhost:8080/staff";
+    $scope.baseApi = "http://localhost:8080"
     
     $scope.model = {};
     $scope.events = [];

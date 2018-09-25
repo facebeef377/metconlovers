@@ -1,0 +1,42 @@
+<h2 style="font-weight: 100;">Lista treningów</h2>
+<br />
+<form class="shadow-sm">
+  <div class="row">
+    <div class="col-8">
+      <h5>Wybierz kategorię</h5>
+      <select class="form-control" ng-model="filter.category" ng-change="getWorkoutsByCatID()">
+        <option value="">Wybierz</option>
+        <option value="{{x.id}}" ng-repeat="x in categories">{{x.name}}</option>
+      </select>
+    </div>
+    <div class="col-4" ng-if="filter.category">
+      <h5>&nbsp;</h5>
+      <a href="#/add_workout"><button class="btn btn-primary">Dodaj trening</button></a>
+    </div>
+  </div>
+</form>
+
+<form class="shadow-sm" ng-if="filter.category">
+  <center><h1 style="font-weight: 100;" ng-if="workouts.length == 0">Brak treningów!</h1></center>
+
+  <table class="table" ng-if="workouts.length">
+    <thead>
+      <th>Lp.</th>
+      <th>Nazwa</th>
+      <th>Opis</th>
+      <th>Time cap</th>
+      <th>Edytuj</th>
+      <th>Usuń</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in workouts">
+        <td>{{$index + 1}}</td>
+        <td>{{x.name}}</td>
+        <td>{{x.description}}</td>
+        <td>{{x.timecap}}</td>
+        <td><button class="btn" ng-click="gotoEdit_workout(x)">GO</button></td>
+        <td><button class="btn btn-danger" ng-click="removeWorkout(x)">X</button></td>
+      </tr>
+    </tbody>
+  </table>
+</form>

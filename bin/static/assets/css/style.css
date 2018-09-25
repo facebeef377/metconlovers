@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body, * {
+  font-family: 'Lato', sans-serif;
+  transition-duration: 0.3s;
+  padding: 0;
+  margin: 0;
+}
+
+.shadow_text{
+  text-shadow: 0px 2px 5.4px rgba(18, 23, 26, 0.3);
+}
+
+nav {
+  position: fixed;
+  color: white;
+  width: 100vw;
+  padding: 20px;
+}
+
+nav span:first-child {
+  font-size:1.3rem;
+}
+
+nav span {
+  margin-left: 10px;
+  margin-right: 20px;
+  line-height: 1.3rem;
+  cursor: pointer;
+}
+
+nav .item:hover {
+  font-size: 110%;
+}
+
+nav .user {
+  text-align: right;
+  padding-right: 50px;
+}
+
+nav .user img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+#heading {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url('../img/9.jpg');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-attachment: fixed;
+  padding-top: 200px;
+  padding-bottom: 150px;
+}
+
+#heading h1 {
+  color: white;
+  font-size: 5rem;
+  font-weight: 100;
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+#heading h1 span {
+  color: rgba(255, 3, 3, 0.83);
+}
+
+#heading form {
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  background: rgba(70, 70, 70, 0.54);
+  border-radius: 8px
+}
+
+#main_table {
+  padding: 50px;
+}
+
+#main_table h1, #main_table h3 {
+  text-align: center;
+}
+
+#promoted_events h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#promoted_events .square {
+    width: 100%;
+    padding-bottom: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+#promoted_events .container-fluid {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+#promoted_events span {
+  bottom: 10px;
+  right: 50px;
+  color: white;
+  position: absolute
+}
