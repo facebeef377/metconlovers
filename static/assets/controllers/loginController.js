@@ -4,14 +4,15 @@ app.controller(
   'loginController',
   function($scope, $rootScope, $http, $localStorage, $sessionStorage)
   {
-    $scope.baseUrl = "http://localhost:8080";
+    $rootScope.baseUrl = "http://localhost:8080";
     
      
             $scope.initVars = function() {
-                console.log("BasketApp ver. 0.05 Init!");
+                
             }
             
             $scope.model = {};
+      $scope.login = {};
             
             $scope.settings_loginpage = {
                 login: true,
@@ -30,13 +31,14 @@ app.controller(
                     $rootScope.showErrorAlert("Podaj login");   
                 } else {
                     $http
-                    .post($rootScope.apiUrl + "register", $scope.model)
+                    .post($rootScope.baseUrl + "/register", $scope.model)
                     .then(
                         function(result) 
                         {
+                          console.log(result.data);
                             if(result.data.Status == "OK"){
                                 $rootScope.showSuccessAlert("Zarejestrowano!");
-                            } else if(result.data.Status == "USER_EXISTS"){
+                            } else if(result.data.Status == "FAILED"){
                                 $rootScope.showErrorAlert("Nazwa użytkownika jest zajęta!");
                             } else {
                                 $rootScope.showErrorAlert("Błąd!");
@@ -48,11 +50,11 @@ app.controller(
             $scope.login = function() {
                 
                 $http
-                .post($rootScope.apiUrl + "login", $scope.model)
+                .post($rootScope.baseUrl + "/login", $scope.login)
                 .then(
                     function(result) 
                     {
-                        console.log(result);
+                        console.log(result.data);
                         if(result.data.id){
                             $rootScope.showSuccessAlert("Zalogowano!");
                         } else {
