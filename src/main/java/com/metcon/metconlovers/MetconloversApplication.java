@@ -1,10 +1,14 @@
 package com.metcon.metconlovers;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import com.metcon.metconlovers.upload.FileStorageProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @EnableConfigurationProperties({
@@ -12,6 +16,11 @@ import com.metcon.metconlovers.upload.FileStorageProperties;
 })
 
 public class MetconloversApplication {
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(MetconloversApplication.class, args);
