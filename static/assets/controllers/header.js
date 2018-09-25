@@ -88,8 +88,28 @@ app.run(function($rootScope) {
         }
     }
   
+  $rootScope.nextLogin = function(type)
+  {
+    if(type == "owner"){
+      document.location = $rootScope.baseUrl + "/staff/index.html";
+    }
+    if(type == "admin"){
+      document.location = $rootScope.baseUrl + "/admin/index.html";
+    }
+    if(type == "judge"){
+      document.location = $rootScope.baseUrl + "/judge/index.html";
+    }
+    if(type == "player"){
+      document.location = $rootScope.baseUrl + "/index.html";
+    }
+  }
+  
   $rootScope.gotoLogin = function() {
     document.location = $rootScope.baseUrl + "/login.html";
+  }
+  
+  $rootScope.goHome = function() {
+    document.location = $rootScope.baseUrl + "/index.html";
   }
   
 });

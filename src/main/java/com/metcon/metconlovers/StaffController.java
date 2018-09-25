@@ -90,6 +90,8 @@ public class StaffController {
 		return workouts.getWorkoutsByCatID(cat_id);
 	}
 	
+	//Zwraca listę wszystkich zawodników przypisanych do kategorii
+	
 	/////////////////////////////////////////////////////
 	//		DODAWANIE
 	/////////////////////////////////////////////////////

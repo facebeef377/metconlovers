@@ -3,6 +3,9 @@ package com.metcon.metconlovers.security;
 import com.auth0.jwt.JWT;
 import com.metcon.metconlovers.MetconUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.metcon.metconlovers.security.SecurityConstants.EXPIRATION_TIME;
@@ -60,5 +65,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+		result.put("status", "OK");
+		result.put("token", token);
+		result.put("type", "owner");
+		
+		GsonBuilder gsonMapBuilder = new GsonBuilder();
+		Gson gsonObject = gsonMapBuilder.create();
+		String JSONObject = gsonObject.toJson(result);
+
+		res.getWriter().write(JSONObject);
+
+		
     }
 }

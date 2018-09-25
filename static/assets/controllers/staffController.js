@@ -20,8 +20,19 @@ app.controller(
       id: 1
     }
     
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - INICJALIZACA PANELU
+    //
+    /////////////////////////////////////////////////////////
+    
     $scope.initVars = function(){
       $scope.getEventsByOwnerID();
+    }
+    
+    $scope.logout = function() {
+      $localStorage.token = null;
+      $rootScope.goHome();
     }
     
     $scope.addEvent = function() {
@@ -270,4 +281,11 @@ app.config(function($routeProvider,$locationProvider) {
 	.otherwise({
 		redirectTo : '/start'
 	});
+});
+
+
+app.run(function($http,$localStorage) {
+  if($localStorage.token){
+    $http.defaults.headers.common.Authorization = "Bearer " + $localStorage.token;
+  } 
 });
