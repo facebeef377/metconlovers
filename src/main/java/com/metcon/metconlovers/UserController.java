@@ -3,7 +3,12 @@ package com.metcon.metconlovers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.simplejavamail.email.Email;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.Mailer;
+import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import static org.simplejavamail.mailer.MailerBuilder.buildMailer;
 
 @Controller
 @RequestMapping(path="/")
@@ -47,7 +54,9 @@ public class UserController {
         MetconUser n =userRepository.findByLogin(user.getLogin());
         if (n == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setType("player");
             userRepository.save(user);
+            sendEmail(user);
             result.put("Status", "OK");
             return result;
         } else {
@@ -55,7 +64,24 @@ public class UserController {
             return result;
         }
 	}
-	
+    @Bean
+    public Mailer inhouseMailer() {
+        return MailerBuilder
+                .withSMTPServer("smtp.gmail.com",587,"metconlovers@gmail.com","Dupa1234")
+            .buildMailer();
+    }
+
+	private void sendEmail(MetconUser recipient) {
+        Email email = EmailBuilder.startingBlank()
+                .from("MetconLovers", "metconlovers@gmail.com")
+                .to(recipient.getName()+" "+recipient.getSurname(), recipient.getEmail())
+                .withSubject("Witaj w serwisie MetconLovers")
+                .withPlainText("ELo")
+                .buildEmail();
+        inhouseMailer().sendMail(email);
+
+    }
+
 	//Edycja uzytkownika
 	@PostMapping(path="/save_user")
 	public @ResponseBody Map<String, String> save_user(@RequestBody MetconUser user) {

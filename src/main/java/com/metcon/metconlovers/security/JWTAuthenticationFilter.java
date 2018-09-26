@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.metcon.metconlovers.UserIdentifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,18 +66,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-        
+
         Map<String, Object> result = new HashMap<String, Object>();
 		result.put("status", "OK");
 		result.put("token", token);
-		result.put("type", "owner");
-		
+		/*MetconUser user=new UserIdentifier().Identify(token);
+		result.put("type", user.getType());*/
+
 		GsonBuilder gsonMapBuilder = new GsonBuilder();
 		Gson gsonObject = gsonMapBuilder.create();
 		String JSONObject = gsonObject.toJson(result);
 
 		res.getWriter().write(JSONObject);
 
-		
+
     }
 }
