@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,8 @@ public class StaffController {
 	private ScoreRepository scores;
 	@Autowired
 	private User_categoryRepository players;
+	@Autowired
+	private UserRepository users;
 	
 	/////////////////////////////////////////////////////
 	//		LISTOWANIE
@@ -44,7 +47,15 @@ public class StaffController {
 	public @ResponseBody Iterable<Event> getAllEvents() {
 		return events.findAll();
 	}
-	
+
+	@PostMapping(path="/getScoresByCatID")
+	public @ResponseBody
+	Iterable<Object> getScoresByCategoryID(@RequestBody Category category)
+	{
+
+		return  users.getScoresByCatID(category.getId());
+	}
+
 	//Zwraca liste wszystkich kategorii w serwisie
 	@PostMapping(path="/getAllCategories")
 	public @ResponseBody Iterable<Category> getAllCategories() {
@@ -91,6 +102,11 @@ public class StaffController {
 	}
 	
 	//Zwraca listę wszystkich zawodników przypisanych do kategorii
+	@PostMapping(path="/getPlayersByCatID")
+	public @ResponseBody List<MetconUser> getPlayersByCatID(@RequestBody Map<String,Object> payload) {
+		Integer cat_id = (Integer) payload.get("cat_id");
+		return users.getPlayersByCatID(cat_id);
+	}
 	
 	/////////////////////////////////////////////////////
 	//		DODAWANIE

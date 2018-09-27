@@ -7,10 +7,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.metcon.metconlovers.UserIdentifier;
+import com.metcon.metconlovers.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,10 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.metcon.metconlovers.security.SecurityConstants.EXPIRATION_TIME;
@@ -32,6 +33,8 @@ import static com.metcon.metconlovers.security.SecurityConstants.TOKEN_PREFIX;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+
+
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -43,17 +46,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             MetconUser creds = new ObjectMapper()
                     .readValue(req.getInputStream(), MetconUser.class);
-
+            List<GrantedAuthority> grantedAuths =
+                    AuthorityUtils.createAuthorityList("ROLE_USER");
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             creds.getLogin(),
                             creds.getPassword(),
-                            new ArrayList<>())
+                            grantedAuths)
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
@@ -63,6 +69,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getUsername())
+                .withClaim("cos",auth.getAuthorities().size())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
@@ -70,13 +77,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, Object> result = new HashMap<String, Object>();
 		result.put("status", "OK");
 		result.put("token", token);
-		/*MetconUser user=new UserIdentifier().Identify(token);
-		result.put("type", user.getType());*/
+        result.put("type", ((User) auth.getPrincipal()).getAuthorities().size());
+
 
 		GsonBuilder gsonMapBuilder = new GsonBuilder();
 		Gson gsonObject = gsonMapBuilder.create();
 		String JSONObject = gsonObject.toJson(result);
-
 		res.getWriter().write(JSONObject);
 
 

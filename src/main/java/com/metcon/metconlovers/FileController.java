@@ -3,6 +3,8 @@ package com.metcon.metconlovers;
 import com.metcon.metconlovers.upload.FileStorageService;
 import com.metcon.metconlovers.upload.UploadFileResponse;
 
+import com.tinify.Options;
+import com.tinify.Tinify;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.mock.web.MockMultipartFile;
 
 @RestController
 public class FileController {
@@ -35,6 +39,7 @@ public class FileController {
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
+
 
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());

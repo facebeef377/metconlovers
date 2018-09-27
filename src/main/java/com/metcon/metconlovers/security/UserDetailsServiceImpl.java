@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MetconUser applicationUser = applicationUserRepository.findByLogin(username);
+        MetconUser applicationUser = applicationUserRepository.getUserByLogin(username);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }

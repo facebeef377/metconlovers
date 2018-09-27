@@ -1,5 +1,7 @@
 package com.metcon.metconlovers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,12 +12,16 @@ import javax.persistence.Id;
 public class MetconUser {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+
 	@Column(name = "id")
 	private Integer id;
+
 	private String login;
 	private String email;
+
 	private String name;
+
 	private String surname;
 	private String phone;
 	private String password;

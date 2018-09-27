@@ -1,5 +1,7 @@
 package com.metcon.metconlovers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +17,11 @@ public class Score {
 	private Integer id;
 	private Integer user_id;
 	private Integer workout_id;
+
 	private String score_time;
+
 	private String score_weight;
+
 	private String score_reps;
 	public Integer getId() {
 		return id;

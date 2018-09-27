@@ -16,23 +16,34 @@ app.controller(
     $scope.workouts = [];
     $scope.currentEvent = {};
     $scope.filter = {};
-    $scope.user = {
-      id: 1
-    }
+    $scope.user = {}
     
     //////////////////////////////////////////////////////////
     //
     //  BLOK - INICJALIZACA PANELU
     //
     /////////////////////////////////////////////////////////
+
     
     $scope.initVars = function(){
       $scope.getEventsByOwnerID();
+      $scope.Identify();
     }
     
     $scope.logout = function() {
       $localStorage.token = null;
       $rootScope.goHome();
+    }
+    
+    $scope.Identify = function() {
+      $http
+      .post($scope.baseApi + "/identify")
+      .then(
+        function(result) {
+          console.log(result.data);
+          $scope.user = result.data;
+          $scope.getEventsByOwnerID();
+        });
     }
     
     $scope.addEvent = function() {
@@ -227,10 +238,162 @@ app.controller(
     //
     //  BLOK - ZAWODNICY
     //
-    /////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
     
+    $scope.page_players = {};
+    $scope.players = [];
     
+    $scope.initPlayers = function(x) {
+      $scope.getCategoriesByEventID(x.id)
+    }
     
+    $scope.getUsersByCatID = function() {
+      var cat_id = parseInt($scope.page_players.cat);
+      
+      var req = {cat_id: cat_id}
+      
+      $http
+      .post($scope.baseUrl + "/getPlayersByCatID", req)
+      .then(
+        function(result) {
+          console.log(result.data);
+          $scope.players = result.data;
+        });
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - WYNIKI
+    //
+    //////////////////////////////////////////////////////////
+    
+    $scope.scores = {};
+    $scope.workout_table = [];
+    $scope.players_table = [];
+    
+    $scope.initResults = function(x) {
+      $scope.getCategoriesByEventID(x.id)
+    }
+    
+    $scope.getScoresByCatID = function() {
+      var cat_id = parseInt($scope.page_players.cat);
+      
+      var req = {cat_id: cat_id}
+      
+      $http
+      .post($scope.baseUrl + "/getScoresByCatID", req)
+      .then(
+        function(result) {
+          console.log(result.data);
+          
+          $scope.workout_table = [];
+          $scope.players_table = [];
+          
+          $scope.scores = result.data;
+          
+          for(var i=0; i<$scope.scores.length; i++){
+            var tmp = $scope.scores[i];
+            $scope.checkWorkout(tmp);
+            $scope.checkPlayer(tmp);
+          }        
+          
+        });
+    }
+    
+    $scope.checkWorkout = function(workout) {
+      if($scope.workout_table.length == 0){
+        
+        var obj = {
+          name: workout[3],
+          id: workout[7]
+        }
+        
+        $scope.workout_table.push(obj);
+      } else {
+        
+       var contain = false;
+        
+        for(var j=0; j<$scope.workout_table.length; j++){
+          if($scope.workout_table[j].name == workout[3]){
+            contain = true;
+            return;
+          }
+        }
+         if(!contain) {
+           
+          var obj2 = {
+            name: workout[3],
+            id: workout[7]
+          }
+           
+          $scope.workout_table.push(obj2);
+        }
+      }
+    }
+    
+    $scope.checkPlayer = function(item) {
+      
+      if(item[4] == null || item[4] == undefined) {
+        item[4] = "0";
+      }
+      var single_score = null;
+      var obj = null;
+      
+      if($scope.players_table.length == 0){
+        
+        obj = {
+          id: item[0],
+          name: item[1],
+          surname: item[2],
+          scores: []
+        }
+        
+        single_score = {
+          name: item[3],
+          score: item[4],
+          id: item[7]
+        }
+        
+        obj.scores.push(single_score);
+        $scope.players_table.push(obj);
+        
+      } else {
+        
+       var contain = false;
+        
+        for(var j=0; j<$scope.players_table.length; j++){
+          if($scope.players_table[j].id == item[0]){
+            contain = true;
+            
+            single_score = {
+              name: item[3],
+              score: item[4],
+              id: item[7]
+            }
+            $scope.players_table[j].scores.push(single_score);
+            
+          }
+        }
+        
+        if(contain == false) {
+          obj = {
+            id: item[0],
+            name: item[1],
+            surname: item[2],
+            scores: []
+          }
+        
+          single_score = {
+            name: item[3],
+            score: item[4],
+            id: item[7]
+          }
+        
+          obj.scores.push(single_score);
+          $scope.players_table.push(obj);
+        }
+      }
+    }
     
     
   });

@@ -38,10 +38,10 @@
             <a href="#pageSubmenu{{x.id}}" ng-click="setEvent(x)" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">{{x.name}}</a>
             <ul class="collapse list-unstyled" id="pageSubmenu{{x.id}}">
               <li>
-                <a href="#/results">Wyniki</a>
+                <a href="#/results" ng-click="initResults(x)">Wyniki</a>
               </li>
               <li>
-                <a href="#/players">Zawodnicy</a>
+                <a href="#/players" ng-click="initPlayers(x)">Zawodnicy</a>
               </li>
               <li>
                 <a href="#/categories" ng-click="getCategoriesByEventID(x.id)">Kategorie</a>

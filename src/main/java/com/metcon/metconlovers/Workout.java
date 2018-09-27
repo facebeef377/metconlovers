@@ -1,5 +1,7 @@
 package com.metcon.metconlovers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ public class Workout {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
+
 	private String name;
 	private String description;
 	private String timecap;
