@@ -1,0 +1,33 @@
+<h2 style="font-weight: 100;">Lista zawodników</h2>
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <form>
+      <center>
+        <h5>Wybierz kategorię</h5>
+        <select class="form-control" ng-model="page_players.cat" ng-change="getUsersByCatID()">
+          <option value="">Wybierz</option>
+          <option value="{{x.id}}" ng-repeat="x in categories">{{x.name}}</option>
+        </select>
+      </center>
+    </form>
+  </div>
+</div>
+
+<form ng-if="players.length == 0">
+  <center><h1>Brak zawodników</h1></center>
+</form>
+
+<form ng-if="players.length">
+  
+  <button class="btn btn-info">Dodaj zawodnika</button>
+  
+  <table class="table">
+    <thead>
+      <th>Imię i nazwisko</th>
+      <th>Email</th>
+      <th>Telefon</th>
+      <th>Usuń</th>
+    </thead>
+  </table>
+</form>

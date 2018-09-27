@@ -1,0 +1,41 @@
+<h2 style="font-weight: 100;">Wyniki</h2>
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <form>
+      <center>
+        <h5>Wybierz kategorię</h5>
+        <select class="form-control" ng-model="page_players.cat" ng-change="getScoresByCatID()">
+          <option value="">Wybierz</option>
+          <option value="{{x.id}}" ng-repeat="x in categories">{{x.name}}</option>
+        </select>
+      </center>
+    </form>
+  </div>
+</div>
+
+<form ng-if="scores.length == 0">
+  <center><h1>Brak wyników</h1></center>
+</form>
+
+<form ng-if="scores.length">
+  
+  <table class="table">
+    <thead>
+      <th>Imię i nazwisko</th>
+      <th ng-repeat="x in workout_table | orderBy : 'id'">{{x.name}}[{{x.id}}]</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in players_table">
+        <td>{{x.name}} {{x.surname}}</td>
+        <td ng-repeat="y in x.scores | orderBy : 'id'">
+          <input class="form-control" ng-model="y.score">[{{y.id}}]
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+<pre>
+{{players_table | json}}
+</pre>
