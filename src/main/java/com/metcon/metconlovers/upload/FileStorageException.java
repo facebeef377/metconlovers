@@ -1,6 +1,6 @@
 package com.metcon.metconlovers.upload;
 
-public class FileStorageException extends RuntimeException {
+class FileStorageException extends RuntimeException {
     public FileStorageException(String message) {
         super(message);
     }

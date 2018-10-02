@@ -1,9 +1,5 @@
 package com.metcon.metconlovers.security;
 
-import org.springframework.security.authentication.AuthenticationManager;
-
-import javax.servlet.Filter;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +19,7 @@ import static com.metcon.metconlovers.security.SecurityConstants.HEADER_STRING;
 import static com.metcon.metconlovers.security.SecurityConstants.SECRET;
 import static com.metcon.metconlovers.security.SecurityConstants.TOKEN_PREFIX;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);

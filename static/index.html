@@ -15,6 +15,7 @@
     <script src="assets/js/ngStorage.min.js" type="text/javascript"></script>
     
     <script src="assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js" ></script>
     <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="assets/js/sweetalert2.js" type="text/javascript"></script>
     
@@ -26,7 +27,7 @@
     <nav>
       <div class="row">
         <div class="col-8">
-          <span>Athletes.cf</span>
+          <img src="assets/img/long_white.png" style="height: 30px;">
           <span class="item">Lista zawodów</span>
           <span class="item">Menu Item #2</span>
           <span class="item">Menu Item #3</span>
@@ -36,13 +37,29 @@
           <img src="assets/img/user.png">
         </div>-->
         <div class="col-4 loginbutton">
-        <span ng-click="gotoLogin()">Zaloguj</span>
+          <span ng-if="!user.login" ng-click="gotoLogin()">Zaloguj</span>
+          
+          <div ng-if="user.login" class="dropdown">
+            <button class="btn-none dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Witaj, {{user.name}}! &nbsp; &nbsp; &nbsp;
+              <img src="assets/img/user.png" class="img-rnd">
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" ng-click="gotoPanel()" href="#">Panel organizatora</a>
+              <a class="dropdown-item" href="#">Twoje zawody</a>
+              <a class="dropdown-item" href="#">Edytuj profil</a>
+              <a class="dropdown-item" ng-click="logout()" href="#">Wyloguj</a>
+            </div>
+          </div>
+          
+          
         </div>
 
       </div>
     </nav>
+    
     <section id="heading">
-      <h1 class="shadow_text">Athletes.<span>cf</span></h1>
+      <h1 class="shadow_text">Pain <span>&</span> Performance</h1>
       <form>
         <div class="row">
           <input type="text" class="form-control col-8" placeholder="Nazwa zawodów, zawodnik, termin">
@@ -52,8 +69,20 @@
     </section>
     <section id="main_table">
       <h1>Aktulane zawody</h1>
-      <h3>Athletes Clash</h3>
+      
+      <div class="row">
+        <div class='col-2' ng-repeat="x in home">
+          <div class="card">
+            <img class="img-fluid" ng-src="{{baseUrl}}/downloadFile/{{x.url_logo}}">
+            <center><h4>{{x.name}}</h4></center>
+          </div>
+        </div>
+      </div>
+      <br /><br /><br />
+      
       <div class="container">
+        
+        
         
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -157,7 +186,28 @@
       </div>
     </section>
     <footer>
-      Bansik
+      <div class="row">
+        <div class="col-4">
+          <img src="assets/img/long_white.png" style="height: 30px;">
+        </div>
+        <div class="col-4">
+          <center>
+            <p class="footer-links">
+              <a href="#">Home</a>
+              ·
+              <a href="#">Blog</a>
+              ·
+              <a href="#">Pricing</a>
+              ·
+              <a href="#">About</a>
+              ·
+              <a href="#">Faq</a>
+              ·
+              <a href="#">Contact</a>
+            </p>
+          </center>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

@@ -132,3 +132,12 @@ form label, form h5, form h4, form h3 {
   background: rgba(0, 0, 0, 0.04);
   color: #464646;
 }
+
+.nav-tabs .nav-link {
+  border-radius: 0px;
+}
+
+.nav-active {
+  background: lightgray !important;
+  font-weight: 700;
+}

@@ -11,8 +11,12 @@ body, * {
   text-shadow: 0px 2px 5.4px rgba(18, 23, 26, 0.3);
 }
 
+.dropdown-menu {
+  transition-duration: 0s;
+}
+
 nav {
-  position: fixed;
+  position: absolute;
   color: white;
   width: 100vw;
   padding: 20px;
@@ -43,6 +47,19 @@ nav .user img {
   width: 50px;
   border-radius: 50%;
   margin-left: 10px;
+}
+
+.img-rnd {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.btn-none {
+  background: transparent;
+  border: none;
+  color: white;
+  margin-right: 20px;
 }
 
 .loginbutton {
@@ -121,4 +138,20 @@ nav .user img {
   right: 50px;
   color: white;
   position: absolute
+}
+
+footer {
+  background-color: #292c2f;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+  padding: 50px;
+  color: white;
+  margin-top: 50px;
+}
+
+footer img {
+  margin-bottom: 20px;
+}
+
+footer a {
+  color: white;
 }

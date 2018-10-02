@@ -1,27 +1,13 @@
 <h2 style="font-weight: 100;">Lista zawodników</h2>
+<br />
 
-<div class="row">
-  <div class="col-6 offset-3">
-    <form>
-      <center>
-        <h5>Wybierz kategorię</h5>
-        <select class="form-control" ng-model="page_players.cat" ng-change="getUsersByCatID()">
-          <option value="">Wybierz</option>
-          <option value="{{x.id}}" ng-repeat="x in categories">{{x.name}}</option>
-        </select>
-      </center>
-    </form>
-  </div>
-</div>
-
-<form ng-if="players.length == 0">
-  <center><h1>Brak zawodników</h1></center>
-</form>
-
-<form ng-if="players.length">
-  
-  <button class="btn btn-info">Dodaj zawodnika</button>
-  
+<form class="shadow-sm">
+  <ul class="nav nav-tabs">
+    <li class="nav-item" ng-repeat="x in categories">
+      <a ng-if="activeCategory.id == x.id" class="nav-link nav-active" ng-click="getUsersByCatID(x.id)">{{x.name}}</a>
+      <a ng-if="activeCategory.id != x.id" class="nav-link active" ng-click="getUsersByCatID(x.id)">{{x.name}}</a>
+    </li>
+  </ul>
   <table class="table">
     <thead>
       <th>Imię i nazwisko</th>
@@ -29,5 +15,15 @@
       <th>Telefon</th>
       <th>Usuń</th>
     </thead>
+    <tbody>
+      <tr ng-repeat="x in players" ng-if="players.length">
+        <td>{{x.name}} {{x.surname}}</td>
+        <td>{{x.email}}</td>
+        <td>{{x.phone}}</td>
+        <td><button class="btn btn-danger" ng-click="removePlayer(x)">X</button></td>
+      </tr>
+    </tbody>
   </table>
+  <br />
+  <button class="btn btn-info" ng-click="addPlayer()">Dodaj zawodnika</button>
 </form>

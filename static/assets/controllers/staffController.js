@@ -29,18 +29,13 @@ app.controller(
       $scope.getEventsByOwnerID();
       $scope.Identify();
     }
-    
-    $scope.logout = function() {
-      $localStorage.token = null;
-      $rootScope.goHome();
-    }
-    
+
     $scope.Identify = function() {
       $http
       .post($scope.baseApi + "/identify")
       .then(
         function(result) {
-          console.log(result.data);
+          delete result.data.password;
           $scope.user = result.data;
           $scope.getEventsByOwnerID();
         });
@@ -119,95 +114,15 @@ app.controller(
         });
     }
     
-    $scope.getCategoriesByEventID = function(x) {
-      
-      var req = {event_id: x}
-      
-      $http
-      .post($scope.baseUrl + "/getCategoriesByEventID", req)
-      .then(
-        function(result) {
-          console.log(result.data);
-          $scope.categories = result.data;
-        });
-    }
-    
-    $scope.gotoEdit_cat = function(x){
-      $scope.category = x;
-      $location.path( "/edit_category" );
-    }
-    
-    $scope.removeCategory = function(x) {
-      var req = {id: x.id};
-      $http
-      .post($scope.baseUrl + "/removeCategory", req)
-      .then(
-        function(result) {
-          if(result.data.status == "OK"){
-            $rootScope.showSuccessAlert("OK!");
-            $scope.getCategoriesByEventID($scope.model.id);
-          } else {
-            $rootScope.errorHandle(result.data.status);
-          }
-        });
-    }
-    
     $scope.clearModel = function() {
       $scope.model = {};
     }
     
-    $scope.getWorkoutsByCatID = function() {
-      
-      var x = parseInt($scope.filter.category);
-      
-      var req = {cat_id: x}
-      
-      $http
-      .post($scope.baseUrl + "/getWorkoutsByCatID", req)
-      .then(
-        function(result) {
-          $scope.workouts = result.data;
-        });
-    }
-    
-    $scope.gotoEdit_workout = function(x){
-      $scope.workout = x;
-      $location.path( "/edit_workout" );
-    }
-    
-    $scope.removeWorkout = function(x) {
-      var req = {id: x.id};
-      $http
-      .post($scope.baseUrl + "/removeWorkout", req)
-      .then(
-        function(result) {
-          if(result.data.status == "OK"){
-            $rootScope.showSuccessAlert("OK!");
-            $scope.getWorkoutsByCatID();
-          } else {
-            $rootScope.errorHandle(result.data.status);
-          }
-        });
-    }
-    
-    $scope.addWorkout = function() {
-      $scope.senddata = angular.copy($scope.workout);
-      $scope.senddata.cat_id = parseInt($scope.filter.category);
-      
-      $http
-      .post($scope.baseUrl + "/addWorkout", $scope.senddata)
-      .then(
-        function(result) {
-          if(result.data.status == "OK"){
-            $rootScope.showSuccessAlert("OK!");
-            $scope.workout = {};
-            $scope.getWorkoutsByCatID();
-            $location.path( "/workouts" );
-          } else {
-            $rootScope.errorHandle(result.data.status);
-          }
-        });
-    }
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - EDYCJA ZAWODÓW
+    //
+    //////////////////////////////////////////////////////////
     
     $scope.imagedata = {};
     $scope.UploadLogo = function(file) {       
@@ -236,6 +151,115 @@ app.controller(
     
     //////////////////////////////////////////////////////////
     //
+    //  BLOK - KATEGORIE
+    //
+    //////////////////////////////////////////////////////////
+    
+    $scope.getCategoriesByEventID = function(x) {
+      
+      var req = {event_id: x}
+      
+      $http
+      .post($scope.baseUrl + "/getCategoriesByEventID", req)
+      .then(
+        function(result) {
+          $scope.categories = result.data;
+          if($scope.categories.length != 0) {
+            $scope.activeCategory = $scope.categories[0];
+            $scope.getWorkoutsByCatID($scope.categories[0].id)
+          }
+        });
+    }
+    
+    $scope.gotoEdit_cat = function(x){
+      $scope.category = x;
+      $location.path( "/edit_category" );
+    }
+    
+    $scope.removeCategory = function(x) {
+      var req = {id: x.id};
+      $http
+      .post($scope.baseUrl + "/removeCategory", req)
+      .then(
+        function(result) {
+          if(result.data.status == "OK"){
+            $rootScope.showSuccessAlert("OK!");
+            $scope.getCategoriesByEventID($scope.model.id);
+          } else {
+            $rootScope.errorHandle(result.data.status);
+          }
+        });
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - WORKOUTY
+    //
+    //////////////////////////////////////////////////////////
+    
+    $scope.activeCategory = {}
+    
+    $scope.getWorkoutsByCatID = function(x) {
+      
+      var req = {cat_id: x}
+      
+      for(var i=0; i<$scope.categories.length; i++) {
+        if($scope.categories[i].id == x){
+          $scope.activeCategory = $scope.categories[i];
+        }
+      }
+      
+      $http
+      .post($scope.baseUrl + "/getWorkoutsByCatID", req)
+      .then(
+        function(result) {
+          console.log(result.data)
+          $scope.workouts = result.data;
+        });
+    }
+    
+    $scope.gotoEdit_workout = function(x){
+      $scope.workout = x;
+      $location.path( "/edit_workout" );
+    }
+    
+    $scope.removeWorkout = function(x) {
+      var req = {id: x.id};
+      $http
+      .post($scope.baseUrl + "/removeWorkout", req)
+      .then(
+        function(result) {
+          if(result.data.status == "OK"){
+            $rootScope.showSuccessAlert("OK!");
+            $scope.getWorkoutsByCatID();
+          } else {
+            $rootScope.errorHandle(result.data.status);
+          }
+        });
+    }
+    
+    $scope.addWorkout = function() {
+      $scope.senddata = angular.copy($scope.workout);
+      $scope.senddata.cat_id = $scope.activeCategory.id;
+      
+      $http
+      .post($scope.baseUrl + "/addWorkout", $scope.senddata)
+      .then(
+        function(result) {
+          if(result.data.status == "OK"){
+            $rootScope.showSuccessAlert("OK!");
+            $scope.workout = {};
+            $scope.getWorkoutsByCatID();
+            $location.path( "/workouts" );
+          } else {
+            $rootScope.errorHandle(result.data.status);
+          }
+        });
+    }
+    
+    
+    //////////////////////////////////////////////////////////
+    //
     //  BLOK - ZAWODNICY
     //
     //////////////////////////////////////////////////////////
@@ -243,21 +267,74 @@ app.controller(
     $scope.page_players = {};
     $scope.players = [];
     
-    $scope.initPlayers = function(x) {
-      $scope.getCategoriesByEventID(x.id)
-    }
-    
-    $scope.getUsersByCatID = function() {
-      var cat_id = parseInt($scope.page_players.cat);
+    $scope.getUsersByCatID = function(x) {
       
-      var req = {cat_id: cat_id}
+      var req = {cat_id: x}
+      
+      for(var i=0; i<$scope.categories.length; i++) {
+        if($scope.categories[i].id == x){
+          $scope.activeCategory = $scope.categories[i];
+        }
+      }
       
       $http
       .post($scope.baseUrl + "/getPlayersByCatID", req)
       .then(
         function(result) {
-          console.log(result.data);
           $scope.players = result.data;
+        });
+    }
+    
+    $scope.addPlayer = function() {
+      var cat_id = $scope.activeCategory.id;
+      
+      swal({
+        title: 'Podaj adres email zawodnika',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: false,
+        confirmButtonText: 'Dodaj',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+          $http
+        .post($scope.baseUrl + "/addPlayer", {user_email: login, cat_id: cat_id})
+        .then(
+          function (result) {
+              if (result.data.status == "OK") {
+                $rootScope.showSuccessAlert("Wysłano zaproszenie!");
+                $scope.getUsersByCatID(cat_id);
+              } else {
+                $rootScope.showErrorAlert("Użytkownik o podanym adresie nie istnieje!");
+              }
+          });
+        }
+      })
+    }
+    
+    $scope.removePlayer = function(x) {
+      var player_id = x.id;
+      var cat_id = $scope.activeCategory.id;
+      
+      var req = {
+        user_id: player_id,
+        cat_id: cat_id
+      }
+      
+      console.warn(req);
+      
+      $http
+      .post($scope.baseUrl + "/removePlayer", req)
+      .then(
+        function(result) {
+          console.log(result.data);
+          if(result.data.status == "OK"){
+            $rootScope.showSuccessAlert("OK!");
+            $scope.getUsersByCatID($scope.activeCategory.id);
+          } else {
+            $rootScope.errorHandle(result.data.status);
+          }
         });
     }
     
@@ -271,14 +348,14 @@ app.controller(
     $scope.workout_table = [];
     $scope.players_table = [];
     
-    $scope.initResults = function(x) {
-      $scope.getCategoriesByEventID(x.id)
-    }
-    
-    $scope.getScoresByCatID = function() {
-      var cat_id = parseInt($scope.page_players.cat);
+    $scope.getScoresByCatID = function(x) {      
+      var req = {cat_id: x}
       
-      var req = {cat_id: cat_id}
+      for(var i=0; i<$scope.categories.length; i++) {
+        if($scope.categories[i].id == x){
+          $scope.activeCategory = $scope.categories[i];
+        }
+      }
       
       $http
       .post($scope.baseUrl + "/getScoresByCatID", req)
@@ -350,8 +427,9 @@ app.controller(
         
         single_score = {
           name: item[3],
-          score: item[4],
-          id: item[7]
+          score_time: item[5],
+            workout_id: item[7],
+            user_id: item[0]
         }
         
         obj.scores.push(single_score);
@@ -367,8 +445,9 @@ app.controller(
             
             single_score = {
               name: item[3],
-              score: item[4],
-              id: item[7]
+              score_time: item[5],
+                workout_id: item[7],
+                user_id: item[0]
             }
             $scope.players_table[j].scores.push(single_score);
             
@@ -385,14 +464,113 @@ app.controller(
         
           single_score = {
             name: item[3],
-            score: item[4],
-            id: item[7]
+            score_time: item[5],
+              workout_id: item[7],
+              user_id: item[0]
           }
         
           obj.scores.push(single_score);
           $scope.players_table.push(obj);
         }
       }
+    }
+    
+    $scope.addScores = function() {
+      $http
+      .post($scope.baseUrl + "/addScores", $scope.players_table)
+      .then(
+        function(result) {
+          if (result.data.status == "OK") {
+              $rootScope.showSuccessAlert("OK!");
+              $scope.getScoresByCatID();
+            } else {
+              $rootScope.showErrorAlert("Błąd!");
+            }
+        });
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - POMIAR CZASU
+    //
+    //////////////////////////////////////////////////////////
+    $scope.event = {};
+    
+    $scope.initTime = function(x) {
+      $scope.event = x;
+    }
+    
+    $scope.saveTime = function() {
+      
+      var req = {id: $scope.event.id}
+      
+      $http
+      .post($scope.baseUrl + "/saveTime", req)
+      .then(
+        function(result) {
+          console.log(result);
+          $rootScope.showSuccessAlert("OK!");
+          $scope.getEventsByOwnerID();
+        });
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - EDYCJA KONTA
+    //
+    //////////////////////////////////////////////////////////
+    
+    $scope.UploadAvatar = function(file) {     
+      $rootScope.showLoading("Czekaj!","Trwa upload obrazka");
+      var data = file.files[0];
+      var fd = new FormData();
+      fd.append("file", data);
+      fd.append("token", $rootScope.token);
+      fd.append("document", "document");
+      fd.append("multimedia", "multimedia");
+
+      $http.post($scope.baseApi + '/uploadFile', fd, {
+        withCredentials: false,
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+      })
+      .then(function(result) {
+        $rootScope.closeLoading();
+        $scope.user.avatar_url = result.data.fileName;
+      });
+    }
+    
+    $scope.deleteAvatar = function(){
+      delete $scope.user.url_logo;
+    }
+    
+    $scope.update_user = function() {
+      console.log($scope.user);
+      $http
+      .post($scope.baseApi + "/update_user", $scope.user)
+      .then(
+        function(result) {
+          if (result.data.Status == "OK") {
+            $rootScope.showSuccessAlert("OK!");
+            $scope.Identify();
+          } else {
+            $rootScope.showErrorAlert("Błąd!");
+          }
+        });
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //  BLOK - OBSŁUGA
+    //
+    //////////////////////////////////////////////////////////
+    
+    $scope.logout = function(){
+      $localStorage.token = null;
+      $scope.user = {};
+      $rootScope.goHome();
     }
     
     
@@ -440,6 +618,9 @@ app.config(function($routeProvider,$locationProvider) {
 	})
     .when('/edit_workout', {
 		templateUrl : 'pages/edit_workout.html',
+	})
+    .when('/time_panel', {
+		templateUrl : 'pages/time_panel.html',
 	})
 	.otherwise({
 		redirectTo : '/start'

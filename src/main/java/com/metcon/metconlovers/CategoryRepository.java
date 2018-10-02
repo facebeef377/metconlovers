@@ -2,6 +2,7 @@ package com.metcon.metconlovers;
 
 import java.util.List;
 
+import com.metcon.metconlovers.entities.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

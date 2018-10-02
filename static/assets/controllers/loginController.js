@@ -34,7 +34,9 @@ app.controller(
               if (result.data.Status == "OK") {
                 $rootScope.showSuccessAlert("Zarejestrowano!");
                 document.location = $rootScope.baseUrl + "/login.html";
-              } else if (result.data.Status == "FAILED") {
+              } else if (result.data.Status == "FAILED_EMAIL") {
+                $rootScope.showErrorAlert("Email jest już zajęty!");
+              } else if (result.data.Status == "FAILED_LOGIN") {
                 $rootScope.showErrorAlert("Nazwa użytkownika jest zajęta!");
               } else {
                 $rootScope.showErrorAlert("Błąd!");
@@ -44,19 +46,46 @@ app.controller(
     }
 
     $scope.login = function () {
-
+      console.log("t");
       $http
         .post($rootScope.baseUrl + "/login", $scope.login_data)
         .then(
           function (result) {
+            console.log("t");
+            console.log(result);
             if (result.data.status == "OK") {
               $rootScope.showSuccessAlert("Zalogowano!");
               $localStorage.token = result.data.token;
-              $rootScope.nextLogin(result.data.type);
+              $rootScope.goHome();
             } else {
               $rootScope.showErrorAlert("Błąd!");
             }
+          },
+      function(result){
+        console.log(result);
+        $rootScope.showErrorAlert("Błąd!");
+      });
+    }
+    
+    $scope.reset_password = function() {
+      swal({
+        title: 'Podaj adres email przypisany do konta',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: false,
+        confirmButtonText: 'Resetuj',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+          $http
+        .post($rootScope.baseUrl + "/reset_password", {email: login})
+        .then(
+          function (result) {
+              $rootScope.showSuccessAlert("OK!");
           });
+        }
+      })
     }
 
     $scope.gotoRegistration = function () {

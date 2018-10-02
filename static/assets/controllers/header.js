@@ -112,4 +112,9 @@ app.run(function($rootScope) {
     document.location = $rootScope.baseUrl + "/index.html";
   }
   
+  $rootScope.gotoPanel = function()
+  {
+    document.location = $rootScope.baseUrl + "/staff/index.html";
+  }
+  
 });

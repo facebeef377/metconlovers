@@ -1,0 +1,9 @@
+<h2 style="font-weight: 100;">Pomiar czasu</h2>
+
+<form>
+  <center>
+    <h5>Rozpocznij nowy heat</h5>
+    <button class="btn btn-info" ng-click="saveTime()">Start</button>
+    <p ng-if="event.timestamp">Ostatni heat rozpoczęty o: {{event.timestamp  | date: "yyyy-MM-dd HH:mm:ss"}}</p>
+  </center>
+</form>
