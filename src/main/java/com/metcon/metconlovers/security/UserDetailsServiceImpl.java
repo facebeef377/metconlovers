@@ -1,7 +1,7 @@
 package com.metcon.metconlovers.security;
 
-import com.metcon.metconlovers.entities.MetconUser;
 import com.metcon.metconlovers.UserRepository;
+import com.metcon.metconlovers.entities.MetconUser;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

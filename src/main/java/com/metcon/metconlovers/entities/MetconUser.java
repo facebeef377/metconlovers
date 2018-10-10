@@ -1,19 +1,21 @@
 package com.metcon.metconlovers.entities;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class MetconUser {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 
 	private String login;
+
 	private String email;
 	private String name;
 	private String surname;
@@ -118,12 +120,16 @@ public class MetconUser {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
 	public String getType() {
 		return type;
 	}

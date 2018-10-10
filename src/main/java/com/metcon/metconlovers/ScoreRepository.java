@@ -1,9 +1,8 @@
 package com.metcon.metconlovers;
 
+import com.metcon.metconlovers.entities.Score;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
-import com.metcon.metconlovers.entities.Score;
 
 import java.util.List;
 
@@ -21,6 +20,7 @@ public interface ScoreRepository extends CrudRepository<Score, Integer> {
     @Query("SELECT m FROM Score m WHERE m.user_id = ?1")
     List<Score> findByUserId(Integer user_id);
 
-
+    @Query(value = "SELECT user_id,workout_id,score_time,score_reps,score_weight FROM score ", nativeQuery = true)
+    List<Score> test();
 	
 }

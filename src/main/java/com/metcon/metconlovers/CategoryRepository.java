@@ -1,10 +1,10 @@
 package com.metcon.metconlovers;
 
-import java.util.List;
-
 import com.metcon.metconlovers.entities.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete

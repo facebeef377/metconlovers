@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.metcon.metconlovers.security.SecurityConstants.HEADER_STRING;
-
-import static com.metcon.metconlovers.security.SecurityConstants.SECRET;
-import static com.metcon.metconlovers.security.SecurityConstants.TOKEN_PREFIX;
+import static com.metcon.metconlovers.security.SecurityConstants.*;
 
 class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 

@@ -1,6 +1,7 @@
 package com.metcon.metconlovers.controlers;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metcon.metconlovers.UserRepository;
 import com.metcon.metconlovers.emailer.Emailer;
 import com.metcon.metconlovers.entities.MetconUser;
@@ -41,7 +42,6 @@ public class UserController {
     }
 
 
-
     //Lista wszystkich uzytkownikow
     @PostMapping(path = "/getAllUser")
     public @ResponseBody
@@ -54,9 +54,9 @@ public class UserController {
     public @ResponseBody
     Map<String, String> register(@RequestBody MetconUser user) {
         Map<String, String> result = new HashMap<String, String>();
-        boolean loginTaken=!(userRepository.getUserByLogin(user.getLogin()) == null);
-        boolean emailTaken=!(userRepository.getUserByEmail(user.getEmail()) == null);
-        if ( !loginTaken && !emailTaken) {
+        boolean loginTaken = !(userRepository.getUserByLogin(user.getLogin()) == null);
+        boolean emailTaken = !(userRepository.getUserByEmail(user.getEmail()) == null);
+        if (!loginTaken && !emailTaken) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setType("player");
             userRepository.save(user);
@@ -64,11 +64,10 @@ public class UserController {
             result.put("Status", "OK");
             return result;
         } else {
-            if(emailTaken)
-            result.put("Status", "FAILED_EMAIL");
-            else
-                if(loginTaken)
-                    result.put("Status", "FAILED_LOGIN");
+            if (emailTaken)
+                result.put("Status", "FAILED_EMAIL");
+            else if (loginTaken)
+                result.put("Status", "FAILED_LOGIN");
             return result;
         }
     }
@@ -77,15 +76,21 @@ public class UserController {
     @PostMapping(path = "/identify")
     public @ResponseBody
     String identify(@RequestHeader(HEADER_STRING) String token) {
-        Gson gson = new Gson();
-        return gson.toJson(identifier.Identify(token));
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.writeValueAsString(identifier.Identify(token));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PostMapping(path = "/update_user")
     public @ResponseBody
-    Map<String,String> updateUser(@RequestBody MetconUser user) {
-        if(user.getPassword()!=null && user.getPassword()!="")
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    Map<String, String> updateUser(@RequestBody MetconUser user) {
+        if (user.getPassword().equals(null) && user.getPassword().equals(""))
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         else
             user.setPassword(userRepository.getUserByLogin(user.getLogin()).getPassword());
         userRepository.save(user);
@@ -102,7 +107,7 @@ public class UserController {
         Map<String, String> result = new HashMap<String, String>();
         MetconUser n = userRepository.getUserByEmail(user.getEmail());
         if (n != null) {
-            String newpassword = PasswordGenerator.generatePassword(6, ALPHA_CAPS + ALPHA + SPECIAL_CHARS);
+            String newpassword = PasswordGenerator.generatePassword(6, ALPHA_CAPS + ALPHA + NUMERIC);
             n.setPassword(bCryptPasswordEncoder.encode(newpassword));
             userRepository.save(n);
             emailer.sendEmailReset(n, newpassword);
@@ -113,12 +118,6 @@ public class UserController {
             return result;
         }
     }
-
-
-
-
-
-
 
 
     //Edycja uzytkownika

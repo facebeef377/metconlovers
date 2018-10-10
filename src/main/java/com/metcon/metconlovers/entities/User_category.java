@@ -1,6 +1,9 @@
 package com.metcon.metconlovers.entities;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.io.Serializable;
 @Entity@IdClass(User_categoryId.class)
 public

@@ -1,11 +1,10 @@
 package com.metcon.metconlovers.security;
 
 import com.auth0.jwt.JWT;
-import com.metcon.metconlovers.entities.MetconUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import com.metcon.metconlovers.entities.MetconUser;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,13 +18,13 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.metcon.metconlovers.security.SecurityConstants.EXPIRATION_TIME;
-import static com.metcon.metconlovers.security.SecurityConstants.HEADER_STRING;
-import static com.metcon.metconlovers.security.SecurityConstants.SECRET;
-import static com.metcon.metconlovers.security.SecurityConstants.TOKEN_PREFIX;
+import static com.metcon.metconlovers.security.SecurityConstants.*;
 
 class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;

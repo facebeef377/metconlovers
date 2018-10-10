@@ -12,9 +12,9 @@ public class UserIdentifier {
     @Autowired
     private UserRepository userRepository;
 
-    public MetconUser Identify(String token){
-        token = token.replaceFirst("Bearer ", "");
-        DecodedJWT decodedtoken = JWT.decode(token);
+    public MetconUser Identify(String Token) {
+        Token = Token.replaceFirst("Bearer ", "");
+        DecodedJWT decodedtoken = JWT.decode(Token);
         String username = decodedtoken.getSubject();
 
 

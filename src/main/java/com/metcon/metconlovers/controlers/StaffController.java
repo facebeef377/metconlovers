@@ -118,7 +118,7 @@ public class StaffController {
     @PostMapping(path = "/getAllScores")
     public @ResponseBody
     Iterable<Score> getAllScores() {
-        return scores.findAll();
+        return scores.test();
     }
 
     //Zwraca liste wszystkich przypisań zawodników w serwisie
@@ -223,7 +223,19 @@ public class StaffController {
     Map<String, String> addScore(@RequestBody Score score) {
         Map<String, String> result = new HashMap<>();
         Event event = events.getEventByWorkoutID(score.getWorkout_id());
-        score.setScore_time( (int) (new Timestamp(new Date().getTime()).getTime()-event.getTimestamp().getTime()));
+        //score.setScore_time( (new Timestamp(new Date().getTime()).getTime()-event.getTimestamp().getTime()));
+        long diff = new Timestamp(new Date().getTime()).getTime() - event.getTimestamp().getTime();
+        int seconds = (int) diff / 1000;
+
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        seconds = (seconds % 3600) % 60;
+        long miliseconds = (diff % 1000);
+        String hms = String.format("%d:%02d:%02d.%03d",
+                hours,
+                minutes,
+                seconds, miliseconds);
+        score.setScore_time(hms);
         scores.save(score);
         result.put("status", "OK");
         return result;}

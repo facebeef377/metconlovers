@@ -1,6 +1,11 @@
 package com.metcon.metconlovers.entities;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.io.Serializable;
 
 @Entity@IdClass(ScoreId.class)
@@ -10,7 +15,8 @@ public class Score {
     private Integer user_id;
     @Id
     private Integer workout_id;
-    private Integer score_time;
+    private String score_time;
+    @JsonIgnore
     private String score_weight;
     private String score_reps;
 
@@ -32,11 +38,11 @@ public class Score {
         this.workout_id = workout_id;
     }
 
-    public Integer getScore_time() {
+    public String getScore_time() {
         return score_time;
     }
 
-    public void setScore_time(Integer score_time) {
+    public void setScore_time(String score_time) {
         this.score_time = score_time;
     }
 

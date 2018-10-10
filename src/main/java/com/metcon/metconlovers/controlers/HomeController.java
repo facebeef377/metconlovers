@@ -1,11 +1,9 @@
 package com.metcon.metconlovers.controlers;
 
-import com.metcon.metconlovers.CategoryRepository;
-import com.metcon.metconlovers.EventRepository;
-import com.metcon.metconlovers.UserRepository;
-import com.metcon.metconlovers.WorkoutRepository;
+import com.metcon.metconlovers.*;
 import com.metcon.metconlovers.entities.Category;
 import com.metcon.metconlovers.entities.Event;
+import com.metcon.metconlovers.entities.Message;
 import com.metcon.metconlovers.entities.Workout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +30,18 @@ public class HomeController {
     CategoryRepository categoryRepository;
     @Autowired
     WorkoutRepository workoutRepository;
+    @Autowired
+    MessageRepository messageRepository;
 
-
+    @PostMapping(path = "/message")
+    public @ResponseBody
+    Map<String, String> sendMessage(@RequestBody Message message) {
+        Map<String, String> result = new HashMap<>();
+        message.setSeen(false);
+        messageRepository.save(message);
+        result.put("Status", "OK");
+        return result;
+    }
 
     @PostMapping(path = "/get_recent_events")
     public @ResponseBody

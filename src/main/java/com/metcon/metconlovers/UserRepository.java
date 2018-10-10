@@ -1,11 +1,10 @@
 package com.metcon.metconlovers;
 
-import java.util.List;
-
+import com.metcon.metconlovers.entities.MetconUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.metcon.metconlovers.entities.MetconUser;
+import java.util.List;
 
 public interface UserRepository extends CrudRepository<MetconUser, Integer> {
 
